@@ -51,6 +51,16 @@ export const login = async (req, res) => {
     }
 }
 
+export const logout = (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            return res.status(500).json({ error: 'Logout failed.' });
+        }
+        res.clearCookie('connect.sid');
+        res.status(200).json({ success: true, message: 'Logged out.' });
+    });
+}
+
 export const me = (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ error: 'Not authenticated.' });
