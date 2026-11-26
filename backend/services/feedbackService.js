@@ -15,6 +15,10 @@ export const submitFeedback = async (userId, feedback) => {
         throw new Error('Order is required.');
     }
 
+    if (!feedback.rating || feedback.rating < 1 || feedback.rating > 5) {
+        throw new Error('Rating must be between 1 and 5.');
+    }
+
     const existingOrder = await doesOrderExist(feedback.order_id);
     if (!existingOrder.result) {
         throw new Error('Order does not exist.');
@@ -22,6 +26,15 @@ export const submitFeedback = async (userId, feedback) => {
 
     if (existingOrder.order.user_id !== userId) {
         throw new Error('This is not your order.');
+    }
+
+    if (existingOrder.order.status !== 'Delivered') {
+        throw new Error('Can only rate delivered orders.');
+    }
+
+    const existingFeedback = await feedbackModel.findFeedbackByOrderId(feedback.order_id);
+    if (existingFeedback.length) {
+        throw new Error('Feedback already submitted for this order.');
     }
 
     await feedbackModel.insert({

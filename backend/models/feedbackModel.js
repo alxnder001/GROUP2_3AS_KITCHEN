@@ -1,5 +1,13 @@
 import pool from '../config/db.js';
 
+export const findFeedbackByOrderId = async (orderId) => {
+    const [rows] = await pool.query(
+        "SELECT * FROM feedback WHERE order_id = ?",
+        [orderId]
+    );
+    return rows;
+}
+
 // insert
 export const insert = async (feedback) => {
     const [result] = await pool.query(
