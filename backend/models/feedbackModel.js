@@ -1,5 +1,17 @@
 import pool from '../config/db.js';
 
+// read
+export const fetch = async () => {
+    const [rows] = await pool.query(
+        `SELECT f.*, CONCAT(u.first_name, ' ', u.last_name) AS customer_name, o.id AS order_id
+         FROM feedback f
+         JOIN users u ON f.user_id = u.id
+         JOIN orders o ON f.order_id = o.id
+         ORDER BY f.created_at DESC`
+    );
+    return rows;
+}
+
 export const findFeedbackByOrderId = async (orderId) => {
     const [rows] = await pool.query(
         "SELECT * FROM feedback WHERE order_id = ?",

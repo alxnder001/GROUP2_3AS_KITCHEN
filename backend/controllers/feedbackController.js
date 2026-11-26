@@ -1,5 +1,15 @@
 import * as feedbackService from '../services/feedbackService.js';
 
+export const getAll = async (req, res) => {
+    try {
+        const feedback = await feedbackService.fetchAllFeedback();
+        res.status(200).json({ success: true, feedback });
+    } catch(e) {
+        console.log(e);
+        res.status(500).json({ error: e.message || 'Internal Server Error' });
+    }
+}
+
 export const submit = async (req, res) => {
     const { order_id, rating, comment } = req.body;
     const feedback = { order_id, rating, comment };

@@ -9,6 +9,12 @@ const doesOrderExist = async (id) => {
     return { result: false, order: undefined };
 }
 
+// get all
+export const fetchAllFeedback = async () => {
+    const feedback = await feedbackModel.fetch();
+    return feedback;
+}
+
 // insert
 export const submitFeedback = async (userId, feedback) => {
     if (!feedback.order_id) {
