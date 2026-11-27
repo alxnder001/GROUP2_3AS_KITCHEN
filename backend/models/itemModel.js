@@ -30,3 +30,12 @@ export const update = async (item) => {
     );
     return result.affectedRows;
 }
+
+// soft delete
+export const remove = async (id) => {
+    const [result] = await pool.query(
+        "UPDATE items SET deleted = 1 WHERE id = ?",
+        [id]
+    );
+    return result.affectedRows;
+}

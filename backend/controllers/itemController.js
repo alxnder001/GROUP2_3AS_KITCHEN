@@ -46,3 +46,20 @@ export const update = async (req, res) => {
         });
     }
 }
+
+export const remove = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedItem = await itemService.deleteItem(parseInt(id));
+        res.status(200).json({
+            success: true,
+            message: deletedItem
+        });
+    } catch(e) {
+        console.log(e);
+        res.status(500).json({
+            error: `${e.message || "Internal Server Error"}`
+        });
+    }
+}
