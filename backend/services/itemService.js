@@ -46,3 +46,14 @@ export const updateItem = async (item) => {
     const rows = await itemModel.update(item);
     return rows;
 }
+
+// delete
+export const deleteItem = async (id) => {
+    const existing = await doesItemExist(id);
+    if (!existing.result) {
+        throw new Error('Product does not exist.');
+    }
+
+    const rows = await itemModel.remove(id);
+    return rows;
+}
